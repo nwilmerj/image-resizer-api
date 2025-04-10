@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<!-- Asegúrate de usar una versión de Spring Boot compatible con Java 21 -->
+		<!-- Por ejemplo, 3.1.x o 3.2.x deberían ser compatibles -->
+		<version>3.2.4</version> <!-- O la versión que estés usando -->
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.newsnow</groupId>
+	<artifactId>image-resizer-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>image-resizer-api</name>
+	<description>API for resizing images for NewsNow</description>
+
+	<properties>
+		<!-- Configura Java 21 explícitamente -->
+		<java.version>21</java.version>
+		<!-- Define la versión del BOM de AWS SDK V2 -->
+		<aws.java.sdk.version>2.25.21</aws.java.sdk.version>
+		<!-- Define la versión de SpringDoc -->
+		<springdoc.version>2.3.0</springdoc.version>
+		<!-- Define la versión de Thumbnailator -->
+		<thumbnailator.version>0.4.20</thumbnailator.version>
+	</properties>
+
+	<!-- =========================================================== -->
+	<!-- SECCIÓN DE GESTIÓN DE DEPENDENCIAS (IMPORTANTE PARA EL BOM) -->
+	<!-- =========================================================== -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>2023.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Importa el BOM de AWS SDK V2 -->
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>${aws.java.sdk.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- =========================================================== -->
+	<!-- DEPENDENCIAS REALES DEL PROYECTO                         -->
+	<!-- =========================================================== -->
+	<dependencies>
+		<!-- Spring Boot Starter Web (para API REST) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- Lombok (para reducir código boilerplate) -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- SpringDoc OpenAPI (para UI de Swagger) -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version> <!-- Usar la propiedad definida -->
+		</dependency>
+
+		<!-- Thumbnailator (para redimensionar imágenes) -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>${thumbnailator.version}</version> <!-- Usar la propiedad definida -->
+		</dependency>
+
+		<!-- AWS SDK V2 S3 -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+		</dependency>
+
+		<!-- AWS SDK V2 Auth -->
+		<!-- ¡SIN versión aquí! Se hereda del BOM -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>auth</artifactId>
+		</dependency>
+
+		<!-- AWS SDK V2 Regions -->
+		<!-- ¡SIN versión aquí! Se hereda del BOM -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>regions</artifactId>
+		</dependency>
+
+		<!-- Spring Boot Starter Test (para pruebas) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-function-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-function-adapter-aws</artifactId>
+		</dependency>
+
+		<!-- AWS SDK V2 DynamoDB -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>dynamodb</artifactId>
+		</dependency>
+
+		<!-- Base de TwelveMonkeys (necesaria) -->
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-core</artifactId>
+			<version>3.10.1</version> <!-- Busca la última versión -->
+		</dependency>
+
+		<!-- Plugins específicos (añade los que necesites) -->
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-jpeg</artifactId>
+			<version>3.10.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-bmp</artifactId>
+			<version>3.10.1</version>
+		</dependency>
+		<!-- Añade este si necesitas WEBP -->
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-webp</artifactId>
+			<version>3.10.1</version>
+		</dependency>
+		<!-- Añade este si necesitas TIFF -->
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-tiff</artifactId>
+			<version>3.10.1</version>
+		</dependency>
+		<!-- proveedor de servicio JAI (Java Advanced Imaging) si no está en el classpath -->
+		<dependency>
+			<groupId>com.github.jai-imageio</groupId>
+			<artifactId>jai-imageio-core</artifactId>
+			<version>1.4.0</version> <!-- O la versión más reciente -->
+		</dependency>
+
+		<!-- para la prueba solamnete -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-events</artifactId>
+			<version>3.11.5</version> <!-- O la última versión estable -->
+		</dependency>
+		<!-- También necesitas aws-lambda-java-core (suele venir con el starter, pero asegúrate) -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-core</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> -->
+		</plugins>
+	</build>
+</project>

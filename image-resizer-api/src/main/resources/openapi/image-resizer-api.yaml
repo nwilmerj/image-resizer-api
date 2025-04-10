@@ -1,0 +1,246 @@
+openapi: 3.0.3
+info:
+  title: NewsNow Image Resizer API (v1 - Secured)
+  description: |-
+    API para redimensionar imágenes y gestionar tareas de procesamiento.
+    Desplegada en AWS Lambda con API Gateway, S3, DynamoDB y Cognito.
+    Sigue las mejores prácticas de diseño de APIs REST, asegurando idempotencia,
+    seguridad (JWT, tamaño de archivo) y escalabilidad.
+  version: 1.0.0
+  contact:
+    name: Soporte NewsNow
+    email: support@newsnow.com
+
+servers:
+  - url: https://abcdxyz.execute-api.us-east-1.amazonaws.com/dev
+    description: Entorno de Desarrollo (AWS API Gateway)
+
+tags:
+  - name: Tasks
+    description: Operaciones relacionadas con las tareas de redimensionamiento
+
+components:
+  securitySchemes:
+    CognitoAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Autenticación requerida vía ID Token JWT de AWS Cognito."
+
+  schemas:
+    TaskRequest:
+      type: object
+      required:
+        - imageData
+        - filename
+        - width
+        - height
+      properties:
+        imageData:
+          type: string
+          format: byte
+          description: Contenido de la imagen codificado en Base64.
+          example: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        filename:
+          type: string
+          description: Nombre original del archivo (incluyendo extensión, ej. 'foto.jpg').
+          example: "my_image.png"
+        width:
+          type: integer
+          format: int32
+          description: Ancho deseado en píxeles. Debe ser positivo.
+          example: 150
+        height:
+          type: integer
+          format: int32
+          description: Alto deseado en píxeles. Debe ser positivo.
+          example: 120
+
+    TaskResponse:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+          description: Identificador único de la tarea.
+          example: "048e07dc-33e3-489f-a0d6-51a88269990f"
+        timestamp:
+          type: string
+          format: date-time
+          description: Fecha y hora (UTC) en que se creó la solicitud/tarea.
+          example: "2025-04-06T13:08:39.106Z"
+        originalMD5:
+          type: string
+          description: Hash MD5 del archivo original.
+          example: "0101a98eabbaf79b2b1d840c9a6f1c26"
+        resolution:
+          type: string
+          description: Resolución aplicada a la imagen (formato Ancho x Alto).
+          example: "50x50"
+        imageUrl:
+          type: string
+          format: url
+          description: URL (vía CloudFront CDN) de la imagen procesada y almacenada.
+          nullable: true
+          example: "https://dngvjy5t6qt66.cloudfront.net/processed/048e07dc-33e3-489f-a0d6-51a88269990f.png"
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Fecha y hora del error.
+        status:
+          type: integer
+          description: Código de estado HTTP.
+        error:
+          type: string
+          description: Descripción corta del error (e.g., Bad Request, Not Found).
+        message:
+          type: string
+          description: Mensaje detallado del error.
+        path:
+          type: string
+          description: Ruta de la API que causó el error.
+
+security:
+  - CognitoAuth: []
+
+paths:
+  /v1/task:
+    post:
+      tags:
+        - Tasks
+      summary: Crear una tarea de redimensionamiento de imagen (JSON/Base64)
+      description: |-
+        Recibe los datos de la imagen (codificada en Base64) y las dimensiones deseadas en un cuerpo JSON.
+        Valida el tamaño del archivo (< 5MB por defecto).
+        Procesa la imagen, la almacena en S3 (privado) y guarda metadatos en DynamoDB.
+        Devuelve los detalles de la tarea, incluyendo la URL de CloudFront para la imagen resultante.
+        **Requiere autenticación JWT (Cognito).**
+      operationId: createResizeTask
+      requestBody:
+        description: Datos de la imagen y dimensiones en formato JSON.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+      responses:
+        '201':
+          description: Tarea creada y procesamiento iniciado/completado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: Datos de entrada inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: "2025-04-06T14:10:00Z"
+                status: 400
+                error: "Bad Request"
+                message: "File size exceeds maximum allowed limit of 5 MB."
+                path: "/v1/task"
+        '401':
+          description: Token de autenticación (JWT) inválido, expirado o no proporcionado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: "2025-04-06T14:11:00Z"
+                status: 401
+                error: "Unauthorized"
+                message: "Invalid authentication token."
+                path: "/v1/task"
+        '500':
+          description: Error interno en el servidor durante el procesamiento
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: "2025-04-06T14:12:00Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "An unexpected error occurred: Failed to store image in S3."
+                path: "/v1/task"
+
+  /v1/task/{taskId}:
+    get:
+      tags:
+        - Tasks
+      summary: Obtener información de una tarea de redimensionamiento específica
+      description: |-
+        Devuelve el estado y los metadatos de una tarea previamente creada usando su ID.
+        **Requiere autenticación JWT (Cognito).**
+      operationId: getTaskById
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: Identificador único (UUID) de la tarea a consultar.
+          schema:
+            type: string
+            format: uuid
+            example: "048e07dc-33e3-489f-a0d6-51a88269990f"
+      responses:
+        '200':
+          description: Detalles de la tarea encontrados.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: El formato del taskId proporcionado no es un UUID válido.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: "2025-04-06T14:15:00Z"
+                status: 400
+                error: "Bad Request"
+                message: "Invalid Task ID format. Please use UUID."
+                path: "/v1/task/esto-no-es-uuid"
+        '401':
+          description: Token de autenticación (JWT) inválido, expirado o no proporcionado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: "2025-04-06T14:16:00Z"
+                status: 401
+                error: "Unauthorized"
+                message: "Invalid authentication token."
+                path: "/v1/task/048e07dc-33e3-489f-a0d6-51a88269990f"
+        '404':
+          description: Tarea no encontrada para el ID proporcionado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: "2025-04-06T14:17:00Z"
+                status: 404
+                error: "Not Found"
+                message: "Task not found for ID: 123e4567-e89b-12d3-a456-426614174000"
+                path: "/v1/task/123e4567-e89b-12d3-a456-426614174000"
+        '500':
+          description: Error interno en el servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                timestamp: "2025-04-06T14:18:00Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "An unexpected error occurred while fetching the task."
+                path: "/v1/task/048e07dc-33e3-489f-a0d6-51a88269990f"
