@@ -26,6 +26,8 @@ La aplicación está construida con Java 21, Spring Boot, y sigue principios de 
 
 ## Diagrama de arquitectura
 
+![image](https://github.com/user-attachments/assets/e14f4c50-6abd-49e2-9f3b-dd1d9c23d1b6)
+
 
 ## Prerrequisitos
 
