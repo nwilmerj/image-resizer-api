@@ -50,6 +50,8 @@ Sigue estos pasos para desplegar la aplicación y la infraestructura en tu cuent
     git clone <URL_DEL_REPOSITORIO>
     cd <NOMBRE_DEL_DIRECTORIO>
     ```
+    *   URL_DEL_REPOSITORIO: https://github.com/nwilmerj/image-resizer-api.git
+    *   NOMBRE_DEL_DIRECTORIO_ image-resizer-api
 
 2.  **Revisar Variables de Terraform:**
     *   Abre el archivo `terraform/variables.tf`.
