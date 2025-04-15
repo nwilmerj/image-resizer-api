@@ -20,7 +20,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJraWQiOiJ3OFBPOEJyeURSMlwvYmtrVFNkWHduV0JacmZQVVhhdTY4Slc3c1FYR3MyQT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI3NDA4NTQwOC1iMGIxLTcwZGItMTlhZi1iZmY5YTk2ODIwOWMiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfVEY4T1JGNWJpIiwiY29nbml0bzp1c2VybmFtZSI6Ijc0MDg1NDA4LWIwYjEtNzBkYi0xOWFmLWJmZjlhOTY4MjA5YyIsIm9yaWdpbl9qdGkiOiI2MDFlOGVhMi1lOGEyLTQ5YjUtODU2OS0yYmIzNmY2ZmE1OTEiLCJhdWQiOiIya2d1bG03bXM4aWk4aW01amFzbGpvdnJqaCIsImV2ZW50X2lkIjoiYmY2ODFkZGQtNTNmOS00YmQ3LWE2NzMtZGJlMjY4NmQwMWU1IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE3NDQyODk3MjksImV4cCI6MTc0NDI5MzMyOCwiaWF0IjoxNzQ0Mjg5NzI5LCJqdGkiOiIwNTc5NGM2Zi01NmJkLTQ1NzktYjA4Mi1mMTdkYmJmMDcwZmMiLCJlbWFpbCI6InRlc3R1c2VyQHR1ZW1haWwuY29tIn0.k_YaL2rf8PY0O62OkydKvpA1WZTCvbod0UAvm2B2V4C-OEHMVXFQb3cyY6phP_NFZILqvBkutZYhPCpyBYhWzin5QtSL-hZIZQsu8a5Q90HLEtOMFRj85kCXf5ofxAlV9v2cZd0r9Dq0mXUQbs7HE_dwbAbP5k3vv8afYEBNCpY0Hlt7nMtEUpncYEVyguwNKi4RagG8TXcb8D4qPI8MribJ1kexLhkVL0S0F2pe4czFFwOmFbJQo-J4t95H4pcX2ZdgGUAAj8Tr9_ZHuDI3gsnXUxJHDYksvcQE2uorxBjozeSnQvVeZv3fasb-yJPH7wY5DAodqBIWhFvx2V-plw",
+						"value": "Bearer eyJraWQiOiJ2eU00Mm0wRFQ4SVl6aVc1UWxTYjVnTm04VVZjZVAxQlBlSnRvaDdOZm1NPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJmNDU4YTRmOC04MDMxLTcwM2EtNzc4NS0yZGYyODYyNzY4NzQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfMjNkdUZrSElpIiwiY29nbml0bzp1c2VybmFtZSI6ImY0NThhNGY4LTgwMzEtNzAzYS03Nzg1LTJkZjI4NjI3Njg3NCIsIm9yaWdpbl9qdGkiOiJiODkwODQ1NS1hNGNjLTRlZGMtOTM1NS0wYTNlMTkwMjg2NzEiLCJhdWQiOiIyaXZhMGNqbGU4OGQ2dGMxY2w2b2N0b251bCIsImV2ZW50X2lkIjoiNGJiN2ZkMzMtNmQwNS00N2VmLThjNmEtZjhiMTk5MzM3Yjg3IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE3NDQ3MzI2MDUsImV4cCI6MTc0NDczNjIwNCwiaWF0IjoxNzQ0NzMyNjA1LCJqdGkiOiJmYjRmNTUwZi03MDRiLTRhM2YtODU4MC0xZTc0OTI5NjcxYzIiLCJlbWFpbCI6InRlc3R1c2VyQHR1ZW1haWwuY29tIn0.V_18bkfIn33ke2HRntJX1WH8-yvgIuVfD1-H1o9HM94JWWlQKEZBbFf4VHCdCpQI25PfHstonub_SIBxK8bgY8QCR4IZsNthf8qA8fPqUqgpzy8Dzu3XSONYDpOdQ9AD9RzE33e0wDAdl29p9t8eF2Ocw2bmP1Ns7CuqMwJJS15cMotktCRYVDH8JUQnscTHPCpAws_8i0X0cNAPJemB2RXfOCNEam3C1OVP_rcWw0AcjbXBfEGBna35t-ooIEYJ9Z5gxmev_82i2XyTEFi3b-Uja7XX7DFpHON79Zm3IZv9KEkSyG3u9GzQCLubeAg8KE2Gs0Bg4XIvd8_D3uCoTA",
 						"type": "text"
 					}
 				],
@@ -34,10 +34,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://7v5o06b0e1.execute-api.us-east-1.amazonaws.com/dev/v1/task",
+					"raw": "https://tza3ps3j1b.execute-api.us-east-1.amazonaws.com/dev/v1/task",
 					"protocol": "https",
 					"host": [
-						"7v5o06b0e1",
+						"tza3ps3j1b",
 						"execute-api",
 						"us-east-1",
 						"amazonaws",
@@ -56,7 +56,30 @@
 			"name": "Obtener imagen",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJ2eU00Mm0wRFQ4SVl6aVc1UWxTYjVnTm04VVZjZVAxQlBlSnRvaDdOZm1NPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJmNDU4YTRmOC04MDMxLTcwM2EtNzc4NS0yZGYyODYyNzY4NzQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfMjNkdUZrSElpIiwiY29nbml0bzp1c2VybmFtZSI6ImY0NThhNGY4LTgwMzEtNzAzYS03Nzg1LTJkZjI4NjI3Njg3NCIsIm9yaWdpbl9qdGkiOiJiODkwODQ1NS1hNGNjLTRlZGMtOTM1NS0wYTNlMTkwMjg2NzEiLCJhdWQiOiIyaXZhMGNqbGU4OGQ2dGMxY2w2b2N0b251bCIsImV2ZW50X2lkIjoiNGJiN2ZkMzMtNmQwNS00N2VmLThjNmEtZjhiMTk5MzM3Yjg3IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE3NDQ3MzI2MDUsImV4cCI6MTc0NDczNjIwNCwiaWF0IjoxNzQ0NzMyNjA1LCJqdGkiOiJmYjRmNTUwZi03MDRiLTRhM2YtODU4MC0xZTc0OTI5NjcxYzIiLCJlbWFpbCI6InRlc3R1c2VyQHR1ZW1haWwuY29tIn0.V_18bkfIn33ke2HRntJX1WH8-yvgIuVfD1-H1o9HM94JWWlQKEZBbFf4VHCdCpQI25PfHstonub_SIBxK8bgY8QCR4IZsNthf8qA8fPqUqgpzy8Dzu3XSONYDpOdQ9AD9RzE33e0wDAdl29p9t8eF2Ocw2bmP1Ns7CuqMwJJS15cMotktCRYVDH8JUQnscTHPCpAws_8i0X0cNAPJemB2RXfOCNEam3C1OVP_rcWw0AcjbXBfEGBna35t-ooIEYJ9Z5gxmev_82i2XyTEFi3b-Uja7XX7DFpHON79Zm3IZv9KEkSyG3u9GzQCLubeAg8KE2Gs0Bg4XIvd8_D3uCoTA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://tza3ps3j1b.execute-api.us-east-1.amazonaws.com/dev/v1/task/[aqui el ID de la imagen]",
+					"protocol": "https",
+					"host": [
+						"tza3ps3j1b",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"v1",
+						"task",
+						"[aqui el ID de la imagen]"
+					]
+				}
 			},
 			"response": []
 		}
